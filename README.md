@@ -8,5 +8,5 @@ collection of tools for defensive operations
     * More coming...
 
 - In progress-- tool that monitors selected critical files for changes
- - add remote system monitoring
- - build up GUI to display monitor log
+    - add remote system monitoring
+    - build up GUI to display monitor log
