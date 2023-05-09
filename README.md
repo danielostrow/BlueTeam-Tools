@@ -7,6 +7,6 @@ collection of tools for defensive operations
     * MD5
     * More coming...
 
-- In progress-- tool that monitors selected critical files for changes
+- In progress-- tool that monitors selected critical files from hashDictionary for changes
     - add remote system monitoring
     - build up GUI to display monitor log
