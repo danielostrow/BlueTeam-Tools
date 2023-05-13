@@ -1,7 +1,26 @@
 import tkinter as tk
 import tkinter.filedialog as filedialog
+import tkinter.messagebox as messagebox
 import hashlib
+import subprocess
 
+def check_sigtool():
+    try:
+        # Attempt to run sigtool to see if it is installed
+        subprocess.run(['sigtool', '-h'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print("sigtool is already installed.")
+    except FileNotFoundError:
+        # If sigtool is not found, prompt the user to install it
+        response = tk.messagebox.askquestion("Sigtool not found", "Sigtool is not installed. Would you like to install it now?")
+        if response == 'yes':
+            try:
+                # Attempt to install sigtool using apt-get
+                subprocess.run(['sudo', 'apt-get', 'install', 'clamav'], check=True)
+                print("sigtool has been installed.")
+            except subprocess.CalledProcessError:
+                print("An error occurred while installing sigtool. Please check the console for more information.")
+
+check_sigtool()
 
 CRITICAL_FILES = {}
 
@@ -57,13 +76,16 @@ def generate_signature():
     CRITICAL_FILE_PATHS = list(CRITICAL_FILES.keys())
     CRITICAL_FILE_PATHS.sort()
     md5_hash = hashlib.md5(repr(CRITICAL_FILES).encode()).hexdigest()
-    print(f"Generated signature MD5 hash: {md5_hash}")
-    dictionary_text.delete("1.0", tk.END)
-    dictionary_text.insert(tk.END, f"<MD5Hash>{md5_hash}\n")
+    clamav_signatures = []
     for file_path in CRITICAL_FILE_PATHS:
-        md5_hash = CRITICAL_FILES[file_path]
-        dictionary_text.insert(tk.END, f"{md5_hash}\n")
-    dictionary_text.insert(tk.END, "</MD5Hash>")
+        clamav_signature = subprocess.check_output(["sigtool", "--md5", file_path]).decode().strip()
+        clamav_signatures.append(clamav_signature)
+    clamav_signature_text = "\n".join(clamav_signatures)
+    dictionary_text.delete("1.0", tk.END)
+    dictionary_text.insert(tk.END, f"{md5_hash}\n")
+    dictionary_text.insert(tk.END, clamav_signature_text)
+    dictionary_text.insert(tk.END, "\n")
+
 
 # Create the button for confirming files to generate dictionary
 confirm_button = tk.Button(root, text="Confirm", command=generate_signature)
