@@ -84,7 +84,7 @@ def generate_signature():
     dictionary_text.delete("1.0", tk.END)
     # dictionary_text.insert(tk.END, f"{md5_hash}\n")
     dictionary_text.insert(tk.END, clamav_signature_text)
-    dictionary_text.insert(tk.END, "\n- -- - --- - -- -\n")
+    dictionary_text.insert(tk.END, "\n\n")
 
 
 # Create the button for confirming files to generate dictionary
