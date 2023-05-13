@@ -37,10 +37,10 @@ def add_critical_file():
 
 # Create the GUI window
 root = tk.Tk()
-root.title("Critical File System")
+root.title("Import Dialog")
 
 # Create the label for displaying critical files
-label = tk.Label(root, text="Critical Files:")
+label = tk.Label(root, text="Known Malware (critical file):")
 label.pack()
 
 # Create the listbox for displaying critical files
@@ -68,7 +68,7 @@ add_file_button = tk.Button(root, text="Add critical file", command=add_critical
 add_file_button.pack()
 
 # Create the text widget for displaying the dictionary
-dictionary_text = tk.Text(root, height=10, width=50)
+dictionary_text = tk.Text(root, height=10, width=100)
 dictionary_text.pack()
 
 # Define the function for generating the signature and displaying the dictionary
@@ -88,7 +88,7 @@ def generate_signature():
 
 
 # Create the button for confirming files to generate dictionary
-confirm_button = tk.Button(root, text="Confirm", command=generate_signature)
+confirm_button = tk.Button(root, text="Generate MD5 Signature", command=generate_signature)
 confirm_button.pack()
 
 # Start the GUI main loop
